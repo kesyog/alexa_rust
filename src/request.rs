@@ -161,7 +161,7 @@ impl Intent {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Slot {
     pub name: String,
-    pub value: String,
+    pub value: Option<String>,
     #[serde(rename = "confirmationStatus")]
     pub confirmation_status: Option<String>,
     pub resolutions: Option<Resolution>,
@@ -372,15 +372,13 @@ impl Request {
 
     /// retrieves the string value of named slot from the request, if it exists
     pub fn slot_value(&self, slot: &str) -> Option<String> {
-        Some(
-            self.body
-                .intent
-                .as_ref()?
-                .get_slot(slot)
-                .as_ref()?
-                .value
-                .clone(),
-        )
+        self.body
+            .intent
+            .as_ref()?
+            .get_slot(slot)
+            .as_ref()?
+            .value
+            .clone()
     }
 
     /// retrieves the attribute value with the given key, if it exists
